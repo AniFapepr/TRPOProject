@@ -41,6 +41,7 @@ public class PlayerAnimate : MonoBehaviour
         //Debug.Log($"�������� ��������1 {legCount}");
         //Debug.Log($"��������");
         //bool v = pm.x != 0 || pm.y != 0;
+        // Ghbdgfsdfgsf
         if (pm.IsMoving() == true) // �������� �����
         {
 
