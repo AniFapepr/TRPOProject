@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Assets.Scripts.Player;
 public class CameraScript : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -11,7 +11,7 @@ public class CameraScript : MonoBehaviour
     void Start () 
     {
 
-        player = FindObjectOfType<CharacterMovement>().transform;
+        player = FindObjectOfType<Player>().transform;
         if (player == null) 
         {
         Debug.LogError("Персонаж не найден!");
