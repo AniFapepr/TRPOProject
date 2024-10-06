@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    // РџРµСЂРµРјРµС‰РµРЅРёРµ РїРµСЂСЃР°
+    // Перемещение перса
     Rigidbody2D rb;
     public float speed;
-
     float x;
     float y;
 
-    public bool canMove = true;
+    public bool canMove = false;
 
-    // РџРѕРІРѕСЂРѕС‚ РїРµСЂСЃР°
+    // Поворот перса
     Vector3 mousePosition;
     Vector3 direct;
 
@@ -27,7 +26,14 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
+
         InputManager();
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //Debug.Log("W");
+        //transform.Translate (Vector3.up * 5 * Time.deltaTime,Space.World); 
+
+        //}
     }
     private void FixedUpdate()
     {
@@ -42,6 +48,14 @@ public class CharacterMovement : MonoBehaviour
     {
         x = Input.GetAxis("Horizontal");
         y = Input.GetAxis("Vertical");
+        if (x != 0 || y != 0)
+        {
+            canMove = true;
+        }
+        else
+        {
+            canMove = false;
+        }
     }
 
     private void MovementManager()
