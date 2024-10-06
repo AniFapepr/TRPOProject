@@ -9,6 +9,7 @@ namespace Assets.Scripts.Player
     public class Player : Entity
     {
         private IMovementStrategy movementStrategy;
+        private PlayerAnimate playerAnimate;
         public float acceleration = 5f;
         public float deceleration = 5f;
         private Rigidbody2D rb;

@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Player;
 
 public class PlayerAnimate : MonoBehaviour
 {
     Sprite[] legsSpr;
     //walking, attacking,
     int legCount = 0;
-    CharacterMovement pm;
+    PlayerMovementStrategy pm;
     float legTimer = 0.05f;
     public SpriteRenderer legs;
     SpriteContainer2D sc;
@@ -15,13 +16,15 @@ public class PlayerAnimate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Debug.Log($"Старт Анимация");
-        pm = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMovement>();
+        //Debug.Log($"пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+        //pm = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+        pm = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().GetComponent<PlayerMovementStrategy>();
         sc = GameObject.FindGameObjectWithTag("GameController").GetComponent<SpriteContainer2D>();
         //walking = sc.getPlayerUnarmedWalk();
         legsSpr = sc.getPlayerLegs();
         legs = this.GetComponent<SpriteRenderer>();
-        //Debug.Log($"Готово");
+        //Debug.Log($"пїЅпїЅпїЅпїЅпїЅпїЅ");
     }
 
     // Update is called once per frame
@@ -34,11 +37,11 @@ public class PlayerAnimate : MonoBehaviour
 
     void animateLegs()
     {
-        //Debug.Log($"Значение тамера1 {legTimer}");
-        //Debug.Log($"Значение счетчика1 {legCount}");
-        //Debug.Log($"Анимация");
+        //Debug.Log($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ1 {legTimer}");
+        //Debug.Log($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ1 {legCount}");
+        //Debug.Log($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         //bool v = pm.x != 0 || pm.y != 0;
-        if (pm.canMove == true) // Изменено здесь
+        if (pm.IsMoving() == true) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         {
 
             legs.sprite = legsSpr[legCount];
@@ -59,7 +62,7 @@ public class PlayerAnimate : MonoBehaviour
                 }
                 legTimer = 0.05f;
             }
-            //Debug.Log($"Значение тамера2 {legTimer}");
+            //Debug.Log($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ2 {legTimer}");
         }
     }
 }

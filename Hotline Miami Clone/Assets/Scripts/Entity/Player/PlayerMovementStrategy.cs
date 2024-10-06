@@ -11,6 +11,7 @@ namespace Assets.Scripts.Player
         private Vector2 currentVelocity = Vector2.zero; // Текущая скорость
         private float x = 0f;
         private float y = 0f;
+        private bool isMoving = false; // Флаг, указывающий на движение
 
         public PlayerMovementStrategy(ControlSystem controlSystem = null)
         {
@@ -30,11 +31,13 @@ namespace Assets.Scripts.Player
             if (targetVelocity.magnitude > 0.1f)
             {
                 currentVelocity = Vector2.Lerp(currentVelocity, targetVelocity, Time.deltaTime * acceleration);
+                isMoving = true; // Устанавливаем флаг движения
             }
             // Если игрок не вводит направления, то замедляем персонажа
             else
             {
                 currentVelocity = Vector2.Lerp(currentVelocity, Vector2.zero, Time.deltaTime * deceleration);
+                isMoving = false; // Сбрасываем флаг движения
             }
 
             // Применяем текущую скорость к Rigidbody2D
@@ -60,6 +63,11 @@ namespace Assets.Scripts.Player
 
             // Поворачиваем объект
             entity.transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+
+        public bool IsMoving() // Метод для получения состояния движения
+        {
+            return isMoving;
         }
     }
 }
