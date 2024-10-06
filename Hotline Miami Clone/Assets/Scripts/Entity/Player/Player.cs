@@ -9,61 +9,64 @@ namespace Assets.Scripts.Player
     public class Player : Entity
     {
         private IMovementStrategy movementStrategy;
+<<<<<<< Updated upstream
+=======
+        private CharacterMovementAnimate playerAnimate;
+>>>>>>> Stashed changes
         public float acceleration = 5f;
         public float deceleration = 5f;
         private Rigidbody2D rb;
+        private Sprite[] legSprites;
+        private SpriteRenderer legsRenderer; // Новый рендерер для ног
 
         void Start()
         {
-            // Инициализация Rigidbody2D
             rb = GetComponent<Rigidbody2D>();
+
             if (rb == null)
             {
                 Debug.LogError("Rigidbody2D component is missing from Player.");
             }
 
-            // Инициализация стратегии движения
-            ControlSystem controlSystem = new ControlSystem();
-            movementStrategy = new PlayerMovementStrategy(controlSystem);
+            // Загрузка спрайтов для анимации
+            legSprites = Resources.LoadAll<Sprite>("Sprites/Entity/Player/Player1/Legs");
 
-            // Проверим, что стратегия была успешно создана
-            if (movementStrategy == null)
+            if (legSprites.Length == 0)
             {
-                Debug.LogError("Movement strategy is not initialized.");
+                Debug.LogError("No foot sprites found in Resources/Sprites.");
             }
+
+            // Получаем SpriteRenderer для ног
+            GameObject legsObject = new GameObject("Legs"); // Создаем новый объект для ног
+            legsObject.transform.SetParent(transform); // Устанавливаем его родителем игрока
+            legsRenderer = legsObject.AddComponent<SpriteRenderer>(); // Добавляем компонент SpriteRenderer
+
+            if (legsRenderer == null)
+            {
+                Debug.LogError("SpriteRenderer component is missing from Legs.");
+            }
+
+            // Инициализация стратегии движения и анимации
+            ControlSystem controlSystem = new ControlSystem();
+            playerAnimate = new CharacterMovementAnimate(legSprites, legsRenderer); // Правильная инициализация
+            movementStrategy = new PlayerMovementStrategy(controlSystem, playerAnimate);
         }
 
         public override void Move()
         {
-            // Проверка на наличие стратегии
-            if (movementStrategy != null)
-            {
-                movementStrategy.Move(this, acceleration, deceleration);
-            }
-            else
-            {
-                Debug.LogError("Movement strategy is null in Move()");
-            }
+            movementStrategy?.Move(this, acceleration, deceleration);
         }
 
         public override void Rotate()
         {
-            // Проверка на наличие стратегии
-            if (movementStrategy != null)
-            {
-                movementStrategy.Rotate(this);
-            }
-            else
-            {
-                Debug.LogError("Movement strategy is null in Rotate()");
-            }
+            movementStrategy?.Rotate(this);
         }
 
         void Update()
         {
-            // Вызываем движение и вращение
             Move();
             Rotate();
+            playerAnimate.SetMoving(movementStrategy.IsMoving()); // Передаем состояние движения для анимации
         }
     }
 }
