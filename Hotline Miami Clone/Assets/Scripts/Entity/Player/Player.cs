@@ -9,10 +9,7 @@ namespace Assets.Scripts.Player
     public class Player : Entity
     {
         private IMovementStrategy movementStrategy;
-<<<<<<< Updated upstream
-=======
         private CharacterMovementAnimate playerAnimate;
->>>>>>> Stashed changes
         public float acceleration = 5f;
         public float deceleration = 5f;
         private Rigidbody2D rb;
@@ -36,10 +33,13 @@ namespace Assets.Scripts.Player
                 Debug.LogError("No foot sprites found in Resources/Sprites.");
             }
 
-            // Получаем SpriteRenderer для ног
-            GameObject legsObject = new GameObject("Legs"); // Создаем новый объект для ног
-            legsObject.transform.SetParent(transform); // Устанавливаем его родителем игрока
-            legsRenderer = legsObject.AddComponent<SpriteRenderer>(); // Добавляем компонент SpriteRenderer
+            // Создание нового SpriteRenderer для ног
+            GameObject legsObject = new GameObject("Legs");
+            legsObject.transform.parent = transform; // Привязка к объекту игрока
+            legsRenderer = legsObject.AddComponent<SpriteRenderer>(); // Добавление нового компонента SpriteRenderer
+
+            // Установка начального спрайта (можно выбрать первый спрайт)
+            legsRenderer.sprite = legSprites.Length > 0 ? legSprites[0] : null;
 
             if (legsRenderer == null)
             {
@@ -48,7 +48,7 @@ namespace Assets.Scripts.Player
 
             // Инициализация стратегии движения и анимации
             ControlSystem controlSystem = new ControlSystem();
-            playerAnimate = new CharacterMovementAnimate(legSprites, legsRenderer); // Правильная инициализация
+            playerAnimate = new CharacterMovementAnimate(legSprites, legsRenderer); // Корректная инициализация
             movementStrategy = new PlayerMovementStrategy(controlSystem, playerAnimate);
         }
 
@@ -66,7 +66,7 @@ namespace Assets.Scripts.Player
         {
             Move();
             Rotate();
-            playerAnimate.SetMoving(movementStrategy.IsMoving()); // Передаем состояние движения для анимации
+            playerAnimate.SetMoving(movementStrategy.IsMoving()); // Передача состояния движения для анимации
         }
     }
 }

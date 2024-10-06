@@ -11,11 +11,9 @@ namespace Assets.Scripts.Player
         private Vector2 currentVelocity = Vector2.zero;
         private float x = 0f;
         private float y = 0f;
-<<<<<<< Updated upstream
-=======
         bool isMoving = false;
+       
         private CharacterMovementAnimate legAnimator;
->>>>>>> Stashed changes
 
         public PlayerMovementStrategy(ControlSystem controlSystem = null, CharacterMovementAnimate legAnimator = null)
         {
@@ -33,18 +31,12 @@ namespace Assets.Scripts.Player
             if (targetVelocity.magnitude > 0.1f)
             {
                 currentVelocity = Vector2.Lerp(currentVelocity, targetVelocity, Time.deltaTime * acceleration);
-<<<<<<< Updated upstream
-=======
                 isMoving = true;
->>>>>>> Stashed changes
             }
             else
             {
                 currentVelocity = Vector2.Lerp(currentVelocity, Vector2.zero, Time.deltaTime * deceleration);
-<<<<<<< Updated upstream
-=======
                 isMoving = false;
->>>>>>> Stashed changes
             }
 
             Rigidbody2D rb = entity.GetComponent<Rigidbody2D>();
@@ -73,13 +65,10 @@ namespace Assets.Scripts.Player
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             entity.transform.rotation = Quaternion.Euler(0, 0, angle);
         }
-<<<<<<< Updated upstream
-=======
 
         public bool IsMoving()
         {
             return isMoving;
         }
->>>>>>> Stashed changes
     }
 }
