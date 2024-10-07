@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Runtime.Serialization;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -17,6 +18,12 @@ public class EnemyAI : MonoBehaviour
 
     int layerMask = 1 << 8;//explain layermask for tutorial (how it works changes to weapon attack)
 
+    ObjectManager obj;
+    GameObject[] weapons;
+    EnemyWeaponController ewc;
+    public GameObject weaponToGoTo;
+    public bool goingToWeapon = false;
+    public bool hasGun = false;
     // Use this for initialization
 
     void Start()
@@ -36,8 +43,39 @@ public class EnemyAI : MonoBehaviour
     {
         movement();
         playerDetect();
-    }
+        canEnemyFindWeapon();
 
+    }
+    void setWeaponToGoTo(GameObject weapon)
+    {
+        weaponToGoTo = weapon;
+        goingToWeapon = true;
+        patrol = false;
+        pursuingPlayer =false;
+        goingToLastLoc=false;
+    }
+    void canEnemyFindWeapon()
+    {
+        if (ewc.getCur() == null && weaponToGoTo == null && goingToWeapon == false)
+        {
+            weapons = obj.getWeapons();
+            for (int x = 0; x < weapons.Length; x++)
+            {
+                float distance = Vector3.Distance(this.transform.position, weapons[x].transform.position);
+                Debug.Log("Weapon" + weapons[x].name + "Distance" + distance);
+                if (distance < 10)
+                {
+                    Vector3 dir = weapons[x].transform.position - transform.position;
+                    RaycastHit2D wepCheck = Physics2D.Raycast(new Vector2(this.transform.position.x, this.transform.position.y), new Vector2(dir.x, dir.y), distance, layerMask);
+                    if (wepCheck.collider.gameObject.tag == "Weapon")
+                    {
+                        setWeaponToGoTo(weapons[x]);
+                    }
+                }
+            }
+
+        }
+    }
     void movement()
     {
 
@@ -56,11 +94,27 @@ public class EnemyAI : MonoBehaviour
 
         if (moving == true)
         {
-            transform.Translate(Vector3.right * speed * Time.deltaTime);
+            if(hasGun == false)
+            {
+                transform.Translate(Vector3.right * speed * Time.deltaTime);
+            }
+            else
+            {
+                if(Vector3.Distance(this.transform.position, player.transform.position)< 5 && pursuingPlayer == true)
+                {
+                    //new enemy weapom
+
+                }
+                else
+                {
+                    transform.Translate(Vector3.right * speed * Time.deltaTime);
+                }
+            }
+           
         }
         if (patrol == true)
         {
-            Debug.Log("Patrolling normally");
+            Debug.Log("Патруль норм");
             speed = 2.0f;
 
             if (hit2.collider != null)
@@ -76,6 +130,11 @@ public class EnemyAI : MonoBehaviour
                         transform.Rotate(0, 0, -90);
                     }
                 }
+            }
+            if (weaponToGoTo != null)
+            {
+                patrol = false;
+                goingToWeapon = true;
             }
         }
 
