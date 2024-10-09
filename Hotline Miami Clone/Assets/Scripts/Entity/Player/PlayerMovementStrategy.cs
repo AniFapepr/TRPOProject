@@ -11,11 +11,11 @@ namespace Assets.Scripts.Player
         private Vector2 currentVelocity = Vector2.zero;
         private float x = 0f;
         private float y = 0f;
-        bool isMoving = false;
-       
-        private CharacterMovementAnimate legAnimator;
+        private bool isMoving = false;
 
-        public PlayerMovementStrategy(ControlSystem controlSystem = null, CharacterMovementAnimate legAnimator = null)
+        private SpriteAnimator legAnimator; // Изменено на SpriteAnimator
+
+        public PlayerMovementStrategy(ControlSystem controlSystem = null, SpriteAnimator legAnimator = null)
         {
             this.controlSystem = controlSystem ?? new ControlSystem();
             this.legAnimator = legAnimator; // Логика анимации ног
@@ -55,7 +55,7 @@ namespace Assets.Scripts.Player
             }
 
             // Обновляем анимацию через legAnimator, только если есть движение
-            legAnimator?.SetMoving(isMoving);
+            legAnimator?.SetAnimating(isMoving);
         }
 
         public void Rotate(Entity entity)

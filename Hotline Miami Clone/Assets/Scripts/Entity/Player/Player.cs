@@ -9,17 +9,19 @@ namespace Assets.Scripts.Player
     public class Player : Entity
     {
         private IMovementStrategy movementStrategy;
-        private CharacterMovementAnimate playerAnimate;
+        private SpriteAnimator legsAnimator; // Изменено на SpriteAnimator
         public float acceleration = 5f;
         public float deceleration = 5f;
         private Rigidbody2D rb;
         private Sprite[] legSprites;
-        private SpriteRenderer legsRenderer; // Новый рендерер для ног
 
         void Start()
         {
-            rb = GetComponent<Rigidbody2D>();
+            // Добавление Rigidbody2D, если он отсутствует
+            rb = gameObject.AddComponent<Rigidbody2D>();
+            rb.gravityScale = 0; // Установка гравитации в 0
 
+            // Проверка на наличие Rigidbody2D
             if (rb == null)
             {
                 Debug.LogError("Rigidbody2D component is missing from Player.");
@@ -36,7 +38,7 @@ namespace Assets.Scripts.Player
             // Создание нового SpriteRenderer для ног
             GameObject legsObject = new GameObject("Legs");
             legsObject.transform.parent = transform; // Привязка к объекту игрока
-            legsRenderer = legsObject.AddComponent<SpriteRenderer>(); // Добавление нового компонента SpriteRenderer
+            SpriteRenderer legsRenderer = legsObject.AddComponent<SpriteRenderer>(); // Добавление нового компонента SpriteRenderer
 
             // Установка начального спрайта (можно выбрать первый спрайт)
             legsRenderer.sprite = legSprites.Length > 0 ? legSprites[0] : null;
@@ -46,10 +48,14 @@ namespace Assets.Scripts.Player
                 Debug.LogError("SpriteRenderer component is missing from Legs.");
             }
 
+            // Добавление CircleCollider2D
+            CircleCollider2D circleCollider = gameObject.AddComponent<CircleCollider2D>();
+            circleCollider.isTrigger = true; // Установите это значение в true, если хотите, чтобы коллайдер не взаимодействовал с физикой
+
             // Инициализация стратегии движения и анимации
             ControlSystem controlSystem = new ControlSystem();
-            playerAnimate = new CharacterMovementAnimate(legSprites, legsRenderer); // Корректная инициализация
-            movementStrategy = new PlayerMovementStrategy(controlSystem, playerAnimate);
+            legsAnimator = new SpriteAnimator(legSprites, legsRenderer); // Используем новый класс SpriteAnimator
+            movementStrategy = new PlayerMovementStrategy(controlSystem, legsAnimator);
         }
 
         public override void Move()
@@ -62,11 +68,16 @@ namespace Assets.Scripts.Player
             movementStrategy?.Rotate(this);
         }
 
+        public override void Attack()
+        {
+            // Реализация атаки (если требуется)
+        }
+
         void Update()
         {
             Move();
             Rotate();
-            playerAnimate.SetMoving(movementStrategy.IsMoving()); // Передача состояния движения для анимации
+            legsAnimator.SetAnimating(movementStrategy.IsMoving()); // Передача состояния движения для анимации
         }
     }
 }
