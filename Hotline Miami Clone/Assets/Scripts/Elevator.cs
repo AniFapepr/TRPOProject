@@ -17,7 +17,7 @@ public class Elevator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timerCountdown();
+        //timerCountdown();
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
