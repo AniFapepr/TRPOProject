@@ -9,6 +9,7 @@ public class Teleport : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            Debug.Log("Телепорт сработал");
             collision.transform.position = destination.position;
         }
     }
