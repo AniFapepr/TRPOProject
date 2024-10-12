@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpriteContainer2D : MonoBehaviour
 {
-    public Sprite[] pLegs, pM4A1Walk, pPunch, pM4A1Attack, pUnarmedWalk, pPistolWalk, pPistolAttack;
+    public Sprite enemySMG, enemyKnife, enemyUnarmed;
+    public Sprite[] pLegs, pM4A1Walk, pPunch, pM4A1Attack, pUnarmedWalk, pPistolWalk, pPistolAttack,ePunch,eMac10Attack,eBowieAttack,eMac10Walk,eBowieWalk,eUnarmedWalk;
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +58,50 @@ public class SpriteContainer2D : MonoBehaviour
                 return pPistolWalk; 
             default:
                 return getPlayerUnarmedWalk(); 
+        }
+    }
+    public Sprite getEnemySprite(string weapon)
+    {
+        if (weapon == "Mac10")
+        {
+            return enemySMG;
+        }
+        else if (weapon == "Bowie")
+        {
+            return enemyKnife;
+        }
+        else
+        {
+            return enemyUnarmed;
+
+        }
+    }
+    public Sprite[] getEnemyPunch()
+    {
+        return ePunch;
+    }
+    public Sprite[] getEnemyWeapon(string weapon)
+    {
+        switch (weapon)
+        {
+            case "Mac10":
+                return eMac10Attack;
+            case "Bowie":
+                return eBowieAttack;
+            default :
+                return getEnemyPunch();
+        }
+    }
+    public Sprite[] getEnemyWalk(string weapon)
+    {
+        switch (weapon)
+        {
+            case "Mac10":
+                return eMac10Walk;
+            case "Bowie":
+                return eBowieWalk;
+            default:
+                return eUnarmedWalk;
         }
     }
 }
