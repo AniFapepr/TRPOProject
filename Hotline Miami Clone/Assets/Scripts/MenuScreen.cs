@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class MenuScreen : MonoBehaviour
 {
-    float originalWidth = 1444.0f;
-    float originalHeight = 900.0f;
+    float originalWidth = 1920.0f;
+    float originalHeight = 1080.0f;
     Vector3 scale;
 
     public GUIStyle text, titleText, titleShadow;
@@ -14,6 +14,20 @@ public class MenuScreen : MonoBehaviour
     bool playSelect = true, exitSelect = false, play = false, menu = true;
     public LevelStore[] levels;
     int levelSelectCount = 0;
+    Color blueColor;
+    Color whiteColor;
+    void Start()
+    {
+        titleText.fontSize = 50;
+        text.fontSize = 40; // Увеличение размера шрифта
+        text.alignment = TextAnchor.MiddleCenter;
+        blueColor = new Color(0f, 0f, 1f); // RGB цвет для синего
+        whiteColor = Color.white; // Цвет для белого
+
+        text.normal.textColor = blueColor;
+        titleText.normal.textColor = blueColor;
+        titleShadow.normal.textColor = blueColor;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -76,11 +90,12 @@ public class MenuScreen : MonoBehaviour
         if (menu == true)
         {
             play = false;
-            titlePos = new Rect(originalWidth / 2 - 400, originalHeight - originalHeight, 800, 300);
-            GUI.Box(titlePos, "Hotline Miami", titleShadow);
+            //titlePos = new Rect(originalWidth / 2 - 400, originalHeight - originalHeight, 800, 300);
+            //GUI.Box(titlePos, "Hotline Miami", titleShadow);
             titlePos = new Rect(originalWidth / 2 - 405, originalHeight - originalHeight - 5, 800, 300);
             GUI.Box(titlePos, "Hotline Miami", titleText);
             Rect menuPos = new Rect(originalWidth / 2 - 400, originalHeight - originalHeight + 400, 800, 200);
+            text.normal.textColor = playSelect ? whiteColor : blueColor;
             if (playSelect == true)
             {
                 GUI.DrawTexture(menuPos, bg);
@@ -92,6 +107,7 @@ public class MenuScreen : MonoBehaviour
             }
 
             Rect exitPos = new Rect(originalWidth / 2 - 400, originalHeight - originalHeight + 700, 800, 200);
+            text.normal.textColor = exitSelect ? whiteColor : blueColor;
             if (exitSelect == true)
             {
                 GUI.DrawTexture(exitPos, bg);
@@ -108,8 +124,8 @@ public class MenuScreen : MonoBehaviour
             GUI.DrawTexture(backToRet, bg);
             GUI.Box(backToRet, "Press backspace to return to menu", text);
 
-            titlePos = new Rect(originalWidth / 2 - 400, originalHeight - originalHeight, 800, 300);
-            GUI.Box(titlePos, "Hotline Miami", titleShadow);
+            //titlePos = new Rect(originalWidth / 2 - 400, originalHeight - originalHeight, 800, 300);
+            //GUI.Box(titlePos, "Hotline Miami", titleShadow);
 
             titlePos = new Rect(originalWidth / 2 - 405, originalHeight - originalHeight - 5, 800, 300);
             GUI.Box(titlePos, "Hotline Miami", titleText);
