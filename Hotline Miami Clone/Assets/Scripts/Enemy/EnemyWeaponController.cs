@@ -18,8 +18,9 @@ public class EnemyWeaponController : MonoBehaviour
     EnemyAI eai;
     GameObject player;
 
+    bool attacking = false;
     SpriteRenderer sr;
-
+    EnemyAnimate ea;
     private void Start()
     {
 
@@ -46,10 +47,12 @@ public class EnemyWeaponController : MonoBehaviour
         if (eai.hasGun == false && gun == false && eai.pursuingPlayer == true && timer <= 0 && Vector3.Distance(this.transform.position, player.transform.position) <= 1.6f)
         {
             attack();
+            ea.setAttacking();
         }
         else if (eai.hasGun == true && gun == false && eai.pursuingPlayer == true && timer <= 0 && Vector3.Distance(this.transform.position, player.transform.position) <= 5.0f)
         {
             attack();
+            ea.setAttacking();
         }
 
         if (changingWeapon == true)
@@ -61,6 +64,10 @@ public class EnemyWeaponController : MonoBehaviour
             }
         }
     }
+    public bool getAttacking()
+    {
+        return attacking;
+    }
     public void setWeapon(GameObject cur, string name, float fireRate, bool gun, bool oneHanded)
     {
         changingWeapon = true;
@@ -70,6 +77,7 @@ public class EnemyWeaponController : MonoBehaviour
         timerReset = fireRate;
         timer = timerReset;
         this.oneHanded = oneHanded;
+        ea.setTorsoSpr(name);
     }
     public void attack()
     {

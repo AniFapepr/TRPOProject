@@ -31,9 +31,9 @@ public class EnemyAI : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerLastPos = this.transform.position;
-
+        obj = GameObject.FindGameObjectWithTag("GameController").GetComponent<ObjectManager>();
         //hit PhysicsJD.Raycast(new Vector2(this.transform.position.x, this.transform.position.y), new Vector2(dir.x, dir.y)):
-
+        ewc = this.GetComponent<EnemyWeaponController>();
         rid = this.GetComponent<Rigidbody2D>();
         layerMask = ~layerMask;
     }
@@ -153,6 +153,7 @@ public class EnemyAI : MonoBehaviour
         {
             Debug.Log("Cheking last known player location");
             speed = 3.0f;
+            rid.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((playerLastPos.y - transform.position.y), (playerLastPos.x - transform.position.x)) * Mathf.Rad2Deg);
             if (Vector3.Distance(this.transform.position, playerLastPos) < 1.5f)
             {
                 //враг игрока не нашел, возвращается к патрулю
@@ -160,7 +161,31 @@ public class EnemyAI : MonoBehaviour
                 goingToLastLoc = false;
             }
         }
+        if (goingToWeapon == true)
+        {
+            speed = 3.0f;
+            rid.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((playerLastPos.y - transform.position.y), (playerLastPos.x - transform.position.x)) * Mathf.Rad2Deg);
+            if (ewc.getCur() != null)
+            {
+                weaponToGoTo = null;
+                patrol = true;
+                goingToWeapon = false;
+                pursuingPlayer = false;
+                goingToLastLoc = false;
+            }
+            if (weaponToGoTo.active == false || weaponToGoTo == null) 
+            {
+                weaponToGoTo = null ;
+                patrol = true;
+                goingToWeapon = false;
+                pursuingPlayer = false;
+                goingToLastLoc = false;
+
+            }
+
+        }
     }
+   
     public void playerDetect()
     {
         Vector3 pos = this.transform.InverseTransformPoint(player.transform.position);
@@ -170,6 +195,7 @@ public class EnemyAI : MonoBehaviour
             {
                 patrol = false;
                 pursuingPlayer = true;
+                goingToWeapon = false;
             }
             else
             {
@@ -177,8 +203,13 @@ public class EnemyAI : MonoBehaviour
                 {
                     goingToLastLoc = true;
                     pursuingPlayer = false;
+                    goingToWeapon = false;
                 }
             }
         }
+    }
+    public float getSpeed()
+    {
+        return speed;
     }
 }

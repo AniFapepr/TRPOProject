@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpriteContainer2D : MonoBehaviour
+public class SpriteContainer : MonoBehaviour
 {
     public Sprite enemySMG, enemyKnife, enemyUnarmed;
     public Sprite[] pLegs, pM4A1Walk, pPunch, pM4A1Attack, pUnarmedWalk, pPistolWalk, pPistolAttack,ePunch,eMac10Attack,eBowieAttack,eMac10Walk,eBowieWalk,eUnarmedWalk;
