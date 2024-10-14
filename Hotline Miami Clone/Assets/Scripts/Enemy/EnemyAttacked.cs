@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnwmyAttacked : MonoBehaviour
+public class EnemyAttacked : MonoBehaviour
 {
     public Sprite knockedDown, stabbed, bulletWound,backUp;
     public GameObject bloodPool, bloodSpurt;
