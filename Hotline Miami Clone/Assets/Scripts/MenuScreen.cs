@@ -132,16 +132,18 @@ public class MenuScreen : MonoBehaviour
 
             if (levels[levelSelectCount].unlocked == true)
             {
+                text.normal.textColor = whiteColor;
                 Rect levelTitlePos = new Rect(originalWidth / 2 - 400, originalHeight - originalHeight + 200, 800, 200);
                 GUI.Box(levelTitlePos, levels[levelSelectCount].levelName, text);
-                levelTitlePos = new Rect(originalWidth / 2 - 250, originalHeight - originalHeight + 400, 500, 500);
+                levelTitlePos = new Rect(originalWidth / 2 - 300, originalHeight - originalHeight + 400, 600, 500);
                 GUI.DrawTexture(levelTitlePos, levels[levelSelectCount].levelIcon);
             }
             else
             {
+                text.normal.textColor = whiteColor;
                 Rect levelTitlePos = new Rect(originalWidth / 2 - 400, originalHeight - originalHeight + 200, 800, 200);
                 GUI.Box(levelTitlePos, "Level Locked", text);
-                levelTitlePos = new Rect(originalWidth / 2 - 250, originalHeight - originalHeight + 400, 500, 500);
+                levelTitlePos = new Rect(originalWidth / 2 - 300, originalHeight - originalHeight + 400, 600, 500);
                 GUI.DrawTexture(levelTitlePos, bg);
             }
         }
