@@ -11,5 +11,7 @@ namespace Assets.Scripts.interfaces{
         // Методы для движения и поворота
         public abstract void Move();
         public abstract void Rotate();
+        public abstract void Attack();
+        
     }
 }

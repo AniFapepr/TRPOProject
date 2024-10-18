@@ -5,14 +5,21 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlayerLeg
+  - bullet
+  - PlayerStates
+  - Gun
+  - Melee
+  - Weapon
+  - FirePoint
+  - Torso
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Weapons
   - Water
   - UI
-  - 
+  - Desproible
   - 
   - 
   - 

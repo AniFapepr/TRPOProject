@@ -13,9 +13,9 @@ namespace Assets.Scripts.Player
         private float y = 0f;
         bool isMoving = false;
        
-        private CharacterMovementAnimate legAnimator;
+        private AnimateScript legAnimator;
 
-        public PlayerMovementStrategy(ControlSystem controlSystem = null, CharacterMovementAnimate legAnimator = null)
+        public PlayerMovementStrategy(ControlSystem controlSystem = null, AnimateScript legAnimator = null)
         {
             this.controlSystem = controlSystem ?? new ControlSystem();
             this.legAnimator = legAnimator; // Логика анимации ног
