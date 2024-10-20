@@ -1,9 +1,6 @@
 using UnityEngine;
-using Assets.Scripts.Player;
-using Assets.Scripts.interfaces;
 
-namespace Assets.Scripts.Player
-{
+using Assets.Scripts.interfaces;
     public class Player : Entity
     {
         [Header("Стратегии")]
@@ -280,4 +277,3 @@ namespace Assets.Scripts.Player
             }
         }
     }
-}

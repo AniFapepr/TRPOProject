@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.Player;
 public class CameraScript : MonoBehaviour
 {
     // Start is called before the first frame update

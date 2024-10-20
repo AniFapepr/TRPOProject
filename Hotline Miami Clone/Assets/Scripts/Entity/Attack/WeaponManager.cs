@@ -1,7 +1,4 @@
 using UnityEngine;
-
-namespace Assets.Scripts.Player
-{
     public class WeaponManager : MonoBehaviour
     {
         private GameObject currentWeapon; // Текущее оружие
@@ -85,4 +82,4 @@ namespace Assets.Scripts.Player
             }
         }
     }
-}
+

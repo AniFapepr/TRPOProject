@@ -1,10 +1,7 @@
 using System;
 using UnityEngine;
-using Assets.Scripts.Player;
 using Assets.Scripts.interfaces;
 
-namespace Assets.Scripts.Player
-{
     public class PlayerMovementStrategy : IMovementStrategy
     {
         private ControlSystem controlSystem;
@@ -71,4 +68,3 @@ namespace Assets.Scripts.Player
             return isMoving;
         }
     }
-}

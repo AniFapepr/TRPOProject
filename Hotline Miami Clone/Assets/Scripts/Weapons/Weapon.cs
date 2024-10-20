@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.interfaces;
-using Assets.Scripts.Player;
+
+
 
 public class Weapon : MonoBehaviour
 {

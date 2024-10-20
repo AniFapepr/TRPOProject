@@ -1,7 +1,4 @@
 using UnityEngine;
-
-namespace Assets.Scripts.Player
-{
     public class AnimateScript : MonoBehaviour
     {
         private Sprite[] sprites; // Спрайты ног
@@ -48,4 +45,3 @@ namespace Assets.Scripts.Player
             spriteRenderer.sprite = sprites[count];
         }
     }
-}

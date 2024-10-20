@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.interfaces;
-using Assets.Scripts.Player;
 using Unity.VisualScripting;
 
 public class GunAttackStrategy : MonoBehaviour, IAttackStrategy

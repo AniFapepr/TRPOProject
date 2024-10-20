@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-namespace Assets.Scripts.Player
-{
     public class ControlSystem
     {
         private static KeyCode rightKey = KeyCode.D;
@@ -42,4 +39,3 @@ namespace Assets.Scripts.Player
         public KeyCode GetAttackKey() => attackKey;
         public KeyCode GetThrowKey() => throwKey;
     }
-}
