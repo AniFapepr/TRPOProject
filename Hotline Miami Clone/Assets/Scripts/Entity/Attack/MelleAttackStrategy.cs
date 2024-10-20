@@ -12,6 +12,11 @@ public class MeleeAttackStrategy : MonoBehaviour, IAttackStrategy
     private float lastAttackTime;
     public float attackRate = 1f;   // Скорость атак
 
+    void Awake()
+    {
+        enemyLayer = LayerMask.GetMask("Destroiable"); // Замените "Enemy" на имя вашего слоя
+    }
+
     // Включение автоматической атаки
     public void EnableAutomaticAttack()
     {
@@ -55,6 +60,7 @@ public class MeleeAttackStrategy : MonoBehaviour, IAttackStrategy
     {
         // Найдем всех врагов в зоне атаки
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(firePoint.position, attackRadius, enemyLayer);
+        Debug.Log("attack performed");
 
         foreach (Collider2D enemy in hitEnemies)
         {
