@@ -5,56 +5,57 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     // Перемещение перса
-    public bool moving = true;
-    public float speed = 10.0f;
-    private void Update()
+    Rigidbody2D rb;
+    public float speed;
+
+    float x;
+    float y;
+
+    public bool canMove = true;
+    public bool moving = false; 
+
+    Vector3 mousePosition;
+    Vector3 direct;
+
+    Camera cam;
+
+    private void Start()
     {
-        if(moving == true)
-        {
-            movement();
-        }
-        movementCheck();
+        rb = GetComponent<Rigidbody2D>();
+        cam = Camera.main;
     }
-    public void setMoving(bool val)
+
+    void Update()
     {
-        moving = val;
+        InputManager();
     }
-    void movement()
+
+    private void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (canMove)
         {
-            transform.Translate (Vector3.up * speed * Time.deltaTime, Space.World);
-            moving = true;
+            MovementManager();
         }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.Translate(Vector3.down * speed * Time.deltaTime, Space.World);
-            moving = true;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World);
-            moving = true;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Translate(Vector3.right * speed * Time.deltaTime, Space.World);
-            moving = true;
-        }
-        if(Input.GetKey(KeyCode.D) != true && Input.GetKey(KeyCode.A) != true && Input.GetKey(KeyCode.W) != true && Input.GetKey(KeyCode.S) != true)
-        {
-            moving = false;
-        }
+        RotationCharacter();
     }
-    void movementCheck()
+
+    private void InputManager()
     {
-        if (Input.GetKey(KeyCode.D) != true && Input.GetKey(KeyCode.A) != true && Input.GetKey(KeyCode.W) != true && Input.GetKey(KeyCode.S) != true)
-        {
-            moving = false;
-        }
-        else
-        {
-            moving = true;
-        }
+        x = Input.GetAxis("Horizontal");
+        y = Input.GetAxis("Vertical");
+
+        // Устанавливаем переменную moving в true, если игрок движется
+        moving = x != 0 || y != 0;
+    }
+
+    private void MovementManager()
+    {
+        rb.velocity = new Vector2(x * speed, y * speed);
+    }
+
+    private void RotationCharacter()
+    {
+        mousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - cam.transform.position.z));
+        rb.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((mousePosition.y - transform.position.y), (mousePosition.x - transform.position.x)) * Mathf.Rad2Deg);
     }
 }
