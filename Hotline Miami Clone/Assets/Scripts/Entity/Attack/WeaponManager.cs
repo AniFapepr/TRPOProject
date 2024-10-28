@@ -1,85 +1,149 @@
 using UnityEngine;
-    public class WeaponManager : MonoBehaviour
+
+public class WeaponManager : MonoBehaviour
+{
+    private GameObject currentWeapon; // Текущее оружие
+    public GameObject defaultWeapon;  // Оружие по умолчанию
+    public float pickupRadius = 2f; // Радиус для поиска оружия
+    public LayerMask weaponLayer;   // Слой, на котором находятся объекты с оружием
+
+    // Референс на игрока
+    public Player player; // Убедитесь, что этот объект установлен в инспекторе
+
+    void Start()
     {
-        private GameObject currentWeapon; // Текущее оружие
-        public GameObject defaultWeapon;  // Оружие по умолчанию
-        public float pickupRadius = 2f; // Радиус для поиска оружия
-        public LayerMask weaponLayer;   // Слой, на котором находятся объекты с оружием
-
-        void Start()
+        if (defaultWeapon == null)
         {
-            if (defaultWeapon == null)
-                Debug.LogError("Weapon default is null from WPM");
-            else
-                Debug.Log("Default weapon: " + defaultWeapon.name); // Выводим имя оружия по умолчанию
-
-            currentWeapon = defaultWeapon;
-
-            if (currentWeapon == null)
-                Debug.LogError("Weapon is null from WPM in start");
-            else
-                Debug.Log("Current weapon: " + currentWeapon.name); // Выводим имя текущего оружия
+            Debug.LogError("Weapon default is null from WPM. Устанавливаю оружие по умолчанию.");
+            SetDefaultWeapon(Resources.Load<GameObject>("Path/To/Your/DefaultWeaponPrefab")); // Укажите правильный путь
+        }
+        else
+        {
+            Debug.Log("Default weapon: " + defaultWeapon.name);
         }
 
-        // Получение текущего оружия
-        public GameObject GetCurrentWeapon()
+        currentWeapon = defaultWeapon;
+
+        if (currentWeapon == null)
         {
-            if(currentWeapon == null)
-                Debug.LogError("Weapon is null from WPM");
-            return currentWeapon;
+            Debug.LogError("Weapon is null from WPM in start");
         }
-
-        // Установка оружия по умолчанию
-        public void SetDefaultWeapon(GameObject weapon)
+        else
         {
-            defaultWeapon = weapon;
+            Debug.Log("Current weapon: " + currentWeapon.name);
         }
+    }
 
-        // Метод смены оружия
-        public void ChangeWeapon(Player player)
+    public GameObject GetCurrentWeapon()
+    {
+        if (currentWeapon == null)
         {
-            // Логика смены оружия. Например, если оружие лежит на полу:
-            GameObject groundWeapon = FindWeaponOnGround(player);
+            Debug.LogError("Weapon is null from WPM");
+        }
+        return currentWeapon;
+    }
 
-            if (groundWeapon != null)
+    public void SetDefaultWeapon(GameObject weapon)
+    {
+        defaultWeapon = weapon;
+    }
+
+    public void ChangeWeapon(Player player)
+    {
+        GameObject groundWeapon = FindWeaponOnGround(player);
+
+        if (groundWeapon != null)
+        {
+            Debug.Log("Оружие на полу обнаружено: " + groundWeapon.name);
+            currentWeapon = groundWeapon;
+
+            string weaponName = currentWeapon.GetComponent<Weapon>().WeaponName;
+            if (weaponName == "M4A1" || weaponName == "Pistol" || weaponName == "Uzi")
             {
-                Debug.Log("Оружие на полу обнаружено: ");
-
-                // Меняем текущее оружие игрока
-                currentWeapon = groundWeapon;
+                ChangeTorsoSprite(weaponName);
             }
-            else
+        }
+        else
+        {
+            Debug.Log("Оружие на полу не найдено.");
+        }
+    }
+
+    private GameObject FindWeaponOnGround(Player player)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.transform.position, pickupRadius, weaponLayer);
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.GetComponent<Weapon>() != null)
             {
-                Debug.Log("Оружие на полу не найдено.");
+                return collider.gameObject;
             }
         }
+        return null;
+    }
 
-        // Метод нахождения оружия на полу рядом с игроком
-        private GameObject FindWeaponOnGround(Player player)
+    private void ChangeTorsoSprite(string weaponName)
+    {
+        Debug.Log("Смена запущена для " + weaponName);
+        if (currentWeapon != null)
         {
-            // Используем Physics2D.OverlapCircle для поиска объектов в радиусе на слое оружия
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(player.transform.position, pickupRadius, weaponLayer);
-
-            foreach (Collider2D collider in colliders)
+            LoadWeapon loadWeapon = currentWeapon.GetComponent<LoadWeapon>();
+            if (loadWeapon != null)
             {
-                // Проверяем, есть ли у объекта компонент Weapon
-                if (collider.GetComponent<Weapon>() != null)
+                Sprite[] weaponSprites = loadWeapon.LoadWeaponSprites();
+                if (weaponSprites != null && weaponSprites.Length > 0)
                 {
-                    return collider.gameObject; // Возвращаем объект, которому принадлежит этот коллайдер
+                    GameObject torsoObject = GameObject.FindWithTag("Torso");
+                    if (torsoObject != null)
+                    {
+                        SpriteRenderer torsoRenderer = torsoObject.GetComponent<SpriteRenderer>();
+                        if (torsoRenderer != null)
+                        {
+                            switch (weaponName)
+                            {
+                                case "M4A1":
+                                    torsoRenderer.sprite = weaponSprites[0]; // Первый спрайт для M4A1
+                                    break;
+                                case "Pistol":
+                                    if (weaponSprites.Length > 1)
+                                        torsoRenderer.sprite = weaponSprites[1]; // Второй спрайт для Pistol
+                                    break;
+                                case "Uzi":
+                                    if (weaponSprites.Length > 2)
+                                        torsoRenderer.sprite = weaponSprites[2]; // Третий спрайт для Uzi
+                                    break;
+                            }
+                            Debug.Log($"Спрайт Torso изменен на спрайт оружия {weaponName}.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Torso объект не найден.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Нет спрайтов оружия.");
                 }
             }
-            return null; // Если оружие не найдено
-        }
-
-
-        // Визуализация радиуса подбора оружия в редакторе
-        private void OnDrawGizmosSelected()
-        {
-            if (currentWeapon != null)
+            else
             {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawWireSphere(transform.position, pickupRadius);
+                Debug.LogError("LoadWeapon компонент не найден на текущем оружии.");
             }
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (currentWeapon != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, pickupRadius);
+        }
+    }
+}
+
+
+
 

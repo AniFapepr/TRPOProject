@@ -1,21 +1,22 @@
 using UnityEngine;
     public class AnimateScript : MonoBehaviour
     {
-        private Sprite[] sprites; // Спрайты ног
-        private SpriteRenderer spriteRenderer;
-        private float timer;
-        private float timerValue;
-        private int count = 0;
+    private Sprite[] sprites; // Спрайты ног
+    private SpriteRenderer spriteRenderer;
+    private float timer;
+    private float timerValue;
+    private int count = 0;
 
-        public AnimateScript(Sprite[] legsSprites, SpriteRenderer spriteRenderer, float timer = 0.01f)
-        {
-            this.sprites = legsSprites;
-            this.spriteRenderer = spriteRenderer;
-            this.timerValue = timer;
-            this.timer = this.timerValue;
-        }
+    public AnimateScript(Sprite[] legsSprites, SpriteRenderer spriteRenderer, float timer = 0.01f)
+    {
+        this.sprites = legsSprites;
+        this.spriteRenderer = spriteRenderer;
+        this.timerValue = timer;
+        this.timer = this.timerValue;
+    }
 
-        public void SetMoving(bool isMoving)
+
+    public void SetMoving(bool isMoving)
         {
             if (isMoving)
             {
