@@ -166,11 +166,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f8eb90ad0a69440a0b433a6678b05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Test
+  levelName: Level2
   levelIcon: {fileID: 2800000, guid: 3bc0e72a231015946ba242cabb68ca70, type: 3}
   highScore: 0
-  unlocked: 0
-  sceneManagerName: map
+  unlocked: 1
+  sceneManagerName: map2
 --- !u!1 &1285138079
 GameObject:
   m_ObjectHideFlags: 0
